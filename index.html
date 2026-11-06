@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TECHFEST '27 — Singularity</title>
+  <meta name="description" content="TECHFEST '27: Singularity. A 3D interactive journey through three days of robotics, AI, code, drones, gaming and a 36-hour hackathon." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='7' fill='%237c5cff'/><ellipse cx='16' cy='16' rx='14' ry='5' fill='none' stroke='%2300e5ff' stroke-width='2'/></svg>" />
+  <script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
+</head>
+<body>
+  <!-- Loader -->
+  <div class="loader" id="loader">
+    <div class="loader__ring"></div>
+    <p class="loader__pct"><span id="loadPct">0</span>%</p>
+    <p class="loader__msg">Collapsing spacetime…</p>
+  </div>
+
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+  <div class="tip" id="tip" aria-hidden="true"></div>
+  <div class="flash" id="flash" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a href="#hero" class="logo"><span class="logo__orb"></span>TECHFEST<b>'27</b></a>
+    <nav class="nav__links" id="navLinks">
+      <a href="#events">Events</a>
+      <a href="#timeline">Schedule</a>
+      <a href="#speakers">Speakers</a>
+      <a href="#register" class="pill">Register</a>
+    </nav>
+    <button class="nav__burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
+    <div class="nav__progress"><span id="progress"></span></div>
+  </header>
+
+  <aside class="dots" aria-label="Section navigation">
+    <a href="#hero" data-label="Core"></a>
+    <a href="#about" data-label="About"></a>
+    <a href="#events" data-label="Events"></a>
+    <a href="#timeline" data-label="Schedule"></a>
+    <a href="#speakers" data-label="Speakers"></a>
+    <a href="#register" data-label="Portal"></a>
+  </aside>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="sec hero" id="hero" data-sec>
+      <p class="eyebrow reveal">Feb 12 — 14, 2027 · Main Campus · 3 days · 40+ events</p>
+      <h1 class="hero__title">
+        <span class="line"><span class="word" data-split>TECHFEST</span></span>
+        <span class="line"><span class="word word--outline" data-split>SINGULARITY</span></span>
+      </h1>
+      <p class="hero__sub reveal">Where every discipline collapses into one point of pure innovation. Scroll to fall in.</p>
+      <div class="countdown reveal" id="countdown" aria-label="Countdown to Techfest">
+        <div><b data-cd="d">00</b><span>days</span></div>
+        <div><b data-cd="h">00</b><span>hrs</span></div>
+        <div><b data-cd="m">00</b><span>min</span></div>
+        <div><b data-cd="s">00</b><span>sec</span></div>
+      </div>
+      <p class="hint reveal"><span class="mouse"></span> Scroll · click the core</p>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="sec about" id="about" data-sec>
+      <div class="about__copy">
+        <p class="kicker reveal">01 / The event horizon</p>
+        <h2 class="reveal">Three days where<br/><em>gravity</em> bends toward ideas.</h2>
+        <p class="reveal">TECHFEST is our annual collision of engineers, artists, hackers and dreamers. Robots duel, drones race, models learn and code compiles at 4 a.m. This year, everything orbits one core: the Singularity.</p>
+        <div class="stats">
+          <div class="stat reveal"><b data-count="40">0</b><span>+ events</span></div>
+          <div class="stat reveal"><b data-count="12000">0</b><span>+ attendees</span></div>
+          <div class="stat reveal"><b data-count="15">0</b><span>L prize pool (₹)</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EVENTS (pinned) -->
+    <section class="sec events" id="events" data-sec data-pin>
+      <div class="stage">
+        <div class="events__head">
+          <p class="kicker">02 / Event worlds</p>
+          <h2>Six worlds.<br/>Pick your orbit.</h2>
+        </div>
+        <article class="evcard" id="evCard" aria-live="polite">
+          <p class="evcard__idx"><span id="evIdx">01</span> / 06</p>
+          <h3 id="evName">RoboWars</h3>
+          <p class="evcard__cat" id="evCat">Robotics</p>
+          <p class="evcard__desc" id="evDesc"></p>
+          <dl class="evcard__meta">
+            <div><dt>Prize</dt><dd id="evPrize"></dd></div>
+            <div><dt>Team</dt><dd id="evTeam"></dd></div>
+            <div><dt>Day</dt><dd id="evDay"></dd></div>
+          </dl>
+          <button class="btn btn--ghost" id="evMore">Explore world →</button>
+        </article>
+        <p class="events__hint">Keep scrolling to rotate the ring · click a world to land</p>
+      </div>
+    </section>
+
+    <!-- TIMELINE (pinned tunnel) -->
+    <section class="sec timeline" id="timeline" data-sec data-pin>
+      <div class="stage">
+        <p class="kicker timeline__kicker">03 / Through the wormhole</p>
+        <div class="days">
+          <article class="day" data-day="0">
+            <p class="day__num">DAY 01</p><h3>Ignition</h3>
+            <ul><li><b>09:00</b> Opening ceremony & core ignition</li><li><b>11:00</b> RoboWars qualifiers</li><li><b>14:00</b> Hackathon kickoff (36h)</li><li><b>19:00</b> Laser & drone light show</li></ul>
+          </article>
+          <article class="day" data-day="1">
+            <p class="day__num">DAY 02</p><h3>Event Horizon</h3>
+            <ul><li><b>10:00</b> Code Sprint finals</li><li><b>12:00</b> Neural Nexus model battles</li><li><b>15:00</b> Drone Dash grand prix</li><li><b>21:00</b> Pixel Arena LAN night</li></ul>
+          </article>
+          <article class="day" data-day="2">
+            <p class="day__num">DAY 03</p><h3>Singularity</h3>
+            <ul><li><b>10:00</b> Hackathon demos</li><li><b>13:00</b> RoboWars grand finale</li><li><b>17:00</b> Keynotes & awards</li><li><b>20:00</b> Closing concert</li></ul>
+          </article>
+        </div>
+        <div class="warpbar"><span id="warpbar"></span></div>
+      </div>
+    </section>
+
+    <!-- SPEAKERS -->
+    <section class="sec speakers" id="speakers" data-sec>
+      <p class="kicker reveal">04 / Gravitational pull</p>
+      <h2 class="reveal">Minds that bend the curve.</h2>
+      <div class="flips">
+        <button class="flip reveal" aria-label="Dr. Aria Venkat, flip for details">
+          <span class="flip__inner">
+            <span class="flip__front"><span class="avatar" style="--a:#7c5cff;--b:#00e5ff">AV</span><b>Dr. Aria Venkat</b><small>Quantum Computing</small></span>
+            <span class="flip__back"><b>“Qubits don't care about your deadlines.”</b><small>Day 3 · 17:00 keynote on fault-tolerant quantum systems.</small></span>
+          </span>
+        </button>
+        <button class="flip reveal" aria-label="Leo Marchetti, flip for details">
+          <span class="flip__inner">
+            <span class="flip__front"><span class="avatar" style="--a:#ff3d81;--b:#ffb547">LM</span><b>Leo Marchetti</b><small>Field Robotics</small></span>
+            <span class="flip__back"><b>“Build robots that fall gracefully.”</b><small>Day 1 · Masterclass on legged locomotion.</small></span>
+          </span>
+        </button>
+        <button class="flip reveal" aria-label="Sana Iqbal, flip for details">
+          <span class="flip__inner">
+            <span class="flip__front"><span class="avatar" style="--a:#39ff9f;--b:#00e5ff">SI</span><b>Sana Iqbal</b><small>AI Safety</small></span>
+            <span class="flip__back"><b>“Alignment is a design problem.”</b><small>Day 2 · Panel: the next decade of AI.</small></span>
+          </span>
+        </button>
+        <button class="flip reveal" aria-label="Dev Kapoor, flip for details">
+          <span class="flip__inner">
+            <span class="flip__front"><span class="avatar" style="--a:#ff6b3d;--b:#7c5cff">DK</span><b>Dev Kapoor</b><small>Game Engines</small></span>
+            <span class="flip__back"><b>“Every frame is a promise.”</b><small>Day 2 · Live-coding a renderer in 60 min.</small></span>
+          </span>
+        </button>
+      </div>
+    </section>
+
+    <!-- REGISTER -->
+    <section class="sec register" id="register" data-sec>
+      <div class="portal-ui reveal">
+        <p class="kicker">05 / Cross the portal</p>
+        <h2>Your pass to<br/>the Singularity.</h2>
+        <form class="regform" id="regForm" novalidate>
+          <label><span>Name</span><input name="name" required autocomplete="name" placeholder="Ada Lovelace" /></label>
+          <label><span>Email</span><input name="email" type="email" required autocomplete="email" placeholder="ada@college.edu" /></label>
+          <label><span>Track</span>
+            <select name="track">
+              <option>RoboWars</option><option>Code Sprint</option><option>Neural Nexus</option>
+              <option>Drone Dash</option><option>Hack the Singularity</option><option>Pixel Arena</option>
+            </select>
+          </label>
+          <button class="btn" type="submit">Initiate warp ⟶</button>
+          <p class="regform__err" id="regErr" role="alert"></p>
+        </form>
+      </div>
+      <div class="success" id="success" role="status" aria-live="polite" hidden>
+        <p class="kicker">Warp complete</p>
+        <h2 id="successTitle">You're in.</h2>
+        <p>Your boarding pass is on its way. See you at the core on <b>Feb 12, 2027</b>.</p>
+        <button class="btn btn--ghost" id="again">Back to the portal</button>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <p>TECHFEST '27 · Singularity — a concept site.</p>
+      <a href="#hero">Back to the core ↑</a>
+    </footer>
+  </main>
+
+  <!-- Event modal -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" hidden>
+    <div class="modal__panel">
+      <button class="modal__x" id="mClose" aria-label="Close">✕</button>
+      <p class="kicker" id="mCat"></p>
+      <h3 id="mTitle"></h3>
+      <p id="mDesc"></p>
+      <ul class="modal__rules" id="mRules"></ul>
+      <a href="#register" class="btn" id="mReg">Register for this world</a>
+    </div>
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
